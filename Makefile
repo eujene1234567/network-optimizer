@@ -1,15 +1,15 @@
-# Makefile for building C project with optional libsystemd and libcurl support
+# Makefile for network optimizer
 
 CC=gcc
-CFLAGS=-Wall -g
-LDFLAGS=-lsystemd -lcurl
+CFLAGS=-I.
 
-SRC=src/main.c src/config.c src/network.c src/optimizer.c src/security.c src/profiles.c src/utils.c
+all: main
 
-all: network-optimizer
+main: src/main.o src/config.o src/network.o src/optimizer.o src/security.o src/profiles.o src/utils.o
+	$(CC) -o network-optimizer src/main.o src/config.o src/network.o src/optimizer.o src/security.o src/profiles.o src/utils.o
 
-network-optimizer: $(SRC)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f network-optimizer
+	rm -f src/*.o network-optimizer
